@@ -1,0 +1,31 @@
+.nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 15px;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    border-bottom: 5px;
+    border-top: 5px;
+    border-color: white;
+  }
+
+  .nav ul li {
+    display: inline;
+    margin-right: 15px;
+  }
+
+  .nav ul li a {
+    text-decoration: none;
+    color: red;
+    padding: 8px 16px;
+    border: 1px solid red;
+    border-radius: 5px;
+  }
+
+  .nav ul li a:hover {
+    background-color: red;
+    color: black;
+  }
+
+  
