@@ -1,13 +1,16 @@
+
+
 .nav ul {
     list-style-type: none;
     margin: 0;
     padding: 15px;
-    background-color: black;
+    background-color: #032b68;
     display: flex;
     justify-content: center;
     border-bottom: 5px;
     border-top: 5px;
-    border-color: white;
+    border-color: #b3c8eb;
+    width: 100%;
   }
 
   .nav ul li {
@@ -17,15 +20,16 @@
 
   .nav ul li a {
     text-decoration: none;
-    color: red;
+    color: #b3c8eb;
     padding: 8px 16px;
-    border: 1px solid red;
+    border: 1px solid #b3c8eb;
     border-radius: 5px;
   }
 
   .nav ul li a:hover {
-    background-color: red;
-    color: black;
+    background-color: #b3c8eb;
+    color: #032b68;
+    border-color: #b3c8eb;
   }
 
-  
+
