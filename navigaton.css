@@ -4,12 +4,12 @@
     list-style-type: none;
     margin: 0;
     padding: 15px;
-    background-color: rgb(0, 183, 255);
+    background-color: #032b68;
     display: flex;
     justify-content: center;
     border-bottom: 5px;
     border-top: 5px;
-    border-color: #ffffff;
+    border-color: #b3c8eb;
     width: 100%;
   }
 
@@ -20,16 +20,16 @@
 
   .nav ul li a {
     text-decoration: none;
-    color: black;
+    color: #b3c8eb;
     padding: 8px 16px;
-    border: 1px solid black;
+    border: 1px solid #b3c8eb;
     border-radius: 5px;
   }
 
   .nav ul li a:hover {
-    background-color: beige;
-    color: rgb(0, 183, 255);
-    border-color: beige;
+    background-color: #b3c8eb;
+    color: #032b68;
+    border-color: #b3c8eb;
   }
 
   /*.nav{
@@ -38,4 +38,8 @@
   }*/
 
 
+<<<<<<< HEAD
   
+=======
+  
+>>>>>>> aab3f76c1c40c8486e8821de8c3619d2319c4e82
