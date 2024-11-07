@@ -1,0 +1,11 @@
+{
+    "name":"Extension for automatically filling in forms",
+    "version": "1.0",
+    "description": "This browser extension auto-fills forms with saved data, enhancing accuracy, privacy, and efficiency.",
+    "manifest_version": 3,
+    "author":"Group_10",
+    "action":{
+        "default_popup":"index.html",
+        "default_title":"Extension for automatically filling in forms"
+    }
+}
