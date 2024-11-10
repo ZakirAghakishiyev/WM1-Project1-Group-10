@@ -1,0 +1,2 @@
+/*This API code is writen based on knowladge learned in Codeacademy course of OpenAI API
+Google Ai Studio and OpenAI have identical API*/
