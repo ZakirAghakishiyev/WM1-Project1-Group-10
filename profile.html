@@ -12,5 +12,30 @@
                 <li><a href="https://www.linkedin.com/" target="_blank">Linkedin</a></li>
             </ul>
         </div>
+
+        <div id="profileSwitcher">
+            <label for="profiles">Select Profile:</label>
+            <select id="profiles"></select>
+            <button onclick="createNewProfile()">New Profile</button>
+        </div>
+    
+        <div id="predefinedFieldsForm">
+            <h3>LinkedIn Fields</h3>
+            <input type="text" id="nameField" placeholder="Name">
+            <textarea id="summaryField" placeholder="Summary"></textarea>
+            <input type="text" id="locationField" placeholder="Location">
+            <textarea id="educationField" placeholder="Education"></textarea>
+            <textarea id="experienceField" placeholder="Experience"></textarea>
+            <textarea id="skillsField" placeholder="Skills"></textarea>
+            <textarea id="certificationsField" placeholder="Certifications"></textarea>
+            <input type="text" id="portfolioField" placeholder="Portfolio Link">
+        </div>
+    
+        <div id="customFieldsForm">
+            <h3>Customizable Fields</h3>
+            <div id="fieldsContainer"></div>
+            <button onclick="addField()">Add New Field</button>
+            <button onclick="saveData()">Save Data</button>
+        </div>
     </body>
 </html>
