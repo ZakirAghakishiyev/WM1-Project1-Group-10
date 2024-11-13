@@ -1,6 +1,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="navigaton.css">    
+        <link rel="stylesheet" href="profile.css">    
         <title>Extension</title>
     </head>
     <body>
@@ -21,21 +22,17 @@
     
         <div id="predefinedFieldsForm">
             <h3>LinkedIn Fields</h3>
-            <input type="text" id="nameField" placeholder="Name">
-            <textarea id="summaryField" placeholder="Summary"></textarea>
-            <input type="text" id="locationField" placeholder="Location">
-            <textarea id="educationField" placeholder="Education"></textarea>
-            <textarea id="experienceField" placeholder="Experience"></textarea>
-            <textarea id="skillsField" placeholder="Skills"></textarea>
-            <textarea id="certificationsField" placeholder="Certifications"></textarea>
-            <input type="text" id="portfolioField" placeholder="Portfolio Link">
+            Name: <input type="text" id="nameField" placeholder="Name">
+            Surname: <input type="text" id="surnameField" placeholder="Surname">
+            Summary: <textarea id="summaryField" placeholder="Summary"></textarea>
+            Location: <input type="text" id="locationField" placeholder="Location">
+            Education: <textarea id="educationField" placeholder="Education"></textarea>
+            Experience: <textarea id="experienceField" placeholder="Experience"></textarea>
+            Skills: <textarea id="skillsField" placeholder="Skills"></textarea>
+            Certifications: <textarea id="certificationsField" placeholder="Certifications"></textarea>
+            Portfolio: <input type="text" id="portfolioField" placeholder="Portfolio Link">
         </div>
-    
-        <div id="customFieldsForm">
-            <h3>Customizable Fields</h3>
-            <div id="fieldsContainer"></div>
-            <button onclick="addField()">Add New Field</button>
-            <button onclick="saveData()">Save Data</button>
-        </div>
-    </body>
+
+        <script src="profile.js"></script>
+
 </html>
