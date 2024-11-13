@@ -1,76 +1,62 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #e5ecf7;
-    margin:0;
-    width: 99%;
-  }
-  
-  form {
-    margin-bottom: 20px;
-  }
-
-  h1{
-    padding-left: 7px;
-  }
-  
-  input, select, button {
-    margin: 5px;
-    padding: 10px;
-    border-radius: 5px;
-    border-width: 1px;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  th, td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: left;
-  }
-  
-  th {
-    background-color: #f4f4f4;
-  }
-  
-/*to prevent change of save application button I edited add and delete seperatetly. 
-Learned how to style item created in js from stack overflow*/
-
-/*  button[onclick*="editJob", onclick*="deleteJob"] {
-    padding: 8px;
-    border-radius: 5px;
-    font-size: 16px;
-    border-width: 0;
-    color: white;
-    margin-right: 5px;
-}*/
-
-  button[onclick*="editJob"] {
-    background-color: green; 
-    padding: 8px;
-    border-radius: 5px;
-    font-size: 16px;
-    border-width: 0;
-    color: white;
-    margin-right: 5px;
+  font-family: Arial, sans-serif;
+  background-color: #e5ecf7;
+  margin: 0;
+  width: 99%;
 }
 
-  button[onclick*="editJob"]:hover {
-    background-color: rgb(1, 96, 1); 
+form {
+  margin-bottom: 20px;
 }
 
-  button[onclick*="deleteJob"] {
-    background-color: red; 
-    padding: 8px;
-    border-radius: 5px;
-    font-size: 16px;
-    border-width: 0;
-    color: white;
-    margin-right: 5px;
+h1 {
+  padding-left: 7px;
 }
 
-  button[onclick*="deleteJob"]:hover {
-    background-color: rgb(194, 1, 1); 
+input, select, button {
+  margin: 5px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+th {
+  background-color: #f4f4f4;
+}
+
+button[onclick*="editJob"],
+button[onclick*="deleteJob"] {
+  padding: 8px;
+  border-radius: 5px;
+  font-size: 16px;
+  border: none;
+  color: white;
+  margin-right: 5px;
+}
+
+button[onclick*="editJob"] {
+  background-color: green;
+}
+
+button[onclick*="editJob"]:hover {
+  background-color: rgb(1, 96, 1);
+}
+
+button[onclick*="deleteJob"] {
+  background-color: red;
+}
+
+button[onclick*="deleteJob"]:hover {
+  background-color: rgb(194, 1, 1);
 }
