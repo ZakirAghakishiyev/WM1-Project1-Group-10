@@ -1,19 +1,54 @@
-<html>
-    <head>
-        <link rel="stylesheet" href="navigaton.css">    
-        <title>Extension</title>
-    </head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="navigation.css">
+    <link rel="stylesheet" href="Dashboard.css">
+    <title>Extension</title>
+</head>
+<body>
 
-    <body>
 <div class="nav">
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="profile.html">Profiles</a></li>
-            <li><a href="https://www.linkedin.com/" target="_blank">Linkedin</a></li>
-        </ul>
-    </div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="profile.html">Profiles</a></li>
+      <li><a href="https://www.linkedin.com/" target="_blank">Linkedin</a></li>
+    </ul>
+</div>
 
-    <p>In this page you can see all your previously filled forms</p>
-    </body>
+<h1>Job Application Tracker</h1>
+
+<form id="jobForm">
+    <input type="text" id="company" placeholder="Company" required>
+    <input type="text" id="jobTitle" placeholder="Job Title" required>
+    <input type="date" id="dateApplied" required>
+    <select id="status" required>
+        <option value="Applied">Applied</option>
+        <option value="Interview">Interview</option>
+        <option value="Waiting">Waiting</option>
+        <option value="Rejected">Rejected</option>
+        <option value="Admitted">Admitted</option>
+    </select>
+    <button type="submit">Save Application</button>
+</form>
+
+<div id="dashboard">
+    <table>
+        <thead>
+            <tr>
+                <th>Company</th>
+                <th>Job Title</th>
+                <th>Date Applied</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="jobList"></tbody>
+    </table>
+</div>
+
+<script src="Dashboard.js"></script>
+</body>
 </html>
