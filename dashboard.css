@@ -2,7 +2,7 @@ body {
   font-family: Arial, sans-serif;
   background-color: #e5ecf7;
   margin: 0;
-  width: 99%;
+  width: 100%;
 }
 
 form {
@@ -11,11 +11,12 @@ form {
 
 h1 {
   padding-left: 7px;
+  font-size: 24px;
 }
 
 input, select, button {
   margin: 5px;
-  padding: 10px;
+  padding: 8px;
   border-radius: 5px;
   border: 1px solid #ddd;
 }
@@ -33,6 +34,10 @@ th, td {
 
 th {
   background-color: #f4f4f4;
+}
+
+tr:hover {
+  background-color: #eaeaea;
 }
 
 button[onclick*="editJob"],
