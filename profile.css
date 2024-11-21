@@ -21,7 +21,12 @@ input, select, button, textarea {
     padding: 12px;
     border-radius: 5px;
     border: 1px solid #ccc;
-    width: 300px; 
+    width: 100%; /* Full width */
+}
+
+textarea {
+    resize: none; /* Disable resizing */
+    height: 150px; /* Fixed height for textareas (adjust as needed) */
 }
 
 table {
