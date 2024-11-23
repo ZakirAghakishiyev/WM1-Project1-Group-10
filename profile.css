@@ -2,12 +2,17 @@ body {
     font-family: Arial, sans-serif;
     background-color: #e5ecf7;
     margin: 0;
-    padding: 10px;
+    padding: 0;
     width: 100%;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 form {
-    margin-bottom: 25px;
+    margin: 0 auto;
+    max-width: 600px;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 h1 {
@@ -15,24 +20,36 @@ h1 {
     color: #333;
 }
 
-input, select, button, textarea {
+input, textarea {
     display: block;
     margin: 10px 0;
     padding: 12px;
     border-radius: 5px;
     border: 1px solid #ccc;
-    width: 100%; /* Full width */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+select, button{
+    display: block;
+    margin: 10px 0;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 20%;
+    box-sizing: border-box;
 }
 
 textarea {
-    resize: none; /* Disable resizing */
-    height: 150px; /* Fixed height for textareas (adjust as needed) */
+    resize: none;
+    height: 150px;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    box-sizing: border-box;
 }
 
 th, td {
@@ -74,4 +91,12 @@ button[onclick*="deleteJob"] {
 
 button[onclick*="deleteJob"]:hover {
     background-color: #c82333;
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow-y: auto;
 }
