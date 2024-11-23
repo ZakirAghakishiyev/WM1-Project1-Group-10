@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="navigaton.css">    
+        <link rel="stylesheet" href="profile.css">    
+        <title>Extension</title>
+    </head>
+    <body>
+        <div class="nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="profile.html">Profiles</a></li>
+                <li><a href="https://www.linkedin.com/" target="_blank">Linkedin</a></li>
+            </ul>
+        </div>
+
+        <div id="profileSwitcher">
+            <label for="profiles">Select Profile:</label>
+            <select id="profiles"></select>
+            <button onclick="createNewProfile()">New Profile</button>
+        </div>
+    
+        <div id="predefinedFieldsForm">
+            <h3>LinkedIn Fields</h3>
+            Name: <input type="text" id="nameField" placeholder="Name">
+            Surname: <input type="text" id="surnameField" placeholder="Surname">
+            Summary: <textarea id="summaryField" placeholder="Summary"></textarea>
+            Location: <input type="text" id="locationField" placeholder="Location">
+            Education: <textarea id="educationField" placeholder="Education"></textarea>
+            Experience: <textarea id="experienceField" placeholder="Experience"></textarea>
+            Skills: <textarea id="skillsField" placeholder="Skills"></textarea>
+            Certifications: <textarea id="certificationsField" placeholder="Certifications"></textarea>
+            Portfolio: <input type="text" id="portfolioField" placeholder="Portfolio Link">
+        </div>
+
+        <script src="profile.js"></script>
+
+</html>
