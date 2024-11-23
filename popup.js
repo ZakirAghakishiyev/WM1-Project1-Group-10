@@ -1,24 +1,30 @@
-document.getElementById("generateCoverLetterBtn").addEventListener("click", function() {
-    const profiles = JSON.parse(localStorage.getItem("profiles")) || [];
-    if (profiles.length > 0) {
-        const profile = profiles[1];  
-        generateCoverLetter(profile).then((coverLetter) => {
-            alert("Generated Cover Letter: \n\n" + coverLetter);
+document.addEventListener("DOMContentLoaded", () => {
+    const profileSelect = document.getElementById("profile");
+    const applyButton = document.getElementById("applyProfile");
+  
+    // Fetch profiles from background.js
+    chrome.runtime.sendMessage({ action: "getProfiles" }, (profiles) => {
+      if (profiles && profiles.length > 0) {
+        console.log("Profiles received:", profiles);
+        profiles.forEach((profile, index) => {
+          const option = document.createElement("option");
+          option.value = index;
+          option.textContent = `${profile.name} ${profile.surname}`;
+          profileSelect.appendChild(option);
         });
-    } else {
-        alert("No profile found. Please create a profile first.");
-    }
-});
-
-async function generateCoverLetter(profile) {
-    const coverLetter = await fetch('https://your-ai-api-url/generate', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            profile: profile
-        })
-    }).then(response => response.json());
-    return coverLetter.text;  
-}
+      } else {
+        console.error("No profiles found or error fetching profiles.");
+      }
+    });
+  
+    // Apply the selected profile
+    applyButton.addEventListener("click", () => {
+      const selectedIndex = profileSelect.value;
+  
+      chrome.runtime.sendMessage({ action: "getProfiles" }, (profiles) => {
+        const selectedProfile = profiles[selectedIndex];
+        chrome.runtime.sendMessage({ action: "fillForm", profile: selectedProfile });
+      });
+    });
+  });
+  
