@@ -1,13 +1,26 @@
-// written based on https://www.youtube.com/watch?v=B8Ihv3xsWYs&t=597s
 {
-    "name":"Extension for automatically filling in forms",
-    "version": "1.0",
-    "description": "This browser extension auto-fills forms with saved data, enhancing accuracy, privacy, and efficiency.",
-    "manifest_version": 3,
-    "author":"Group_10",
-    "action":{
-        "default_popup":"index.html",
-        "default_title":"Extension for automatically filling in forms"
+  "name": "Extension for automatically filling in forms",
+  "version": "1.0",
+  "description": "This browser extension auto-fills forms with saved data, enhancing accuracy, privacy, and efficiency.",
+  "manifest_version": 3,
+  "author": "Group_10",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "http://*/",
+    "https://*/"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",  
+    "default_title": "Extension for automatically filling in forms"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],  
+      "js": ["content.js"]
     }
+  ]
 }
-
