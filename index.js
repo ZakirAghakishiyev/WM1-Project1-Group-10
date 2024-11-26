@@ -1,69 +1,50 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const saveButton = document.getElementById("save");
-    const reloadButton = document.getElementById("reload");
-    const formFields = document.querySelectorAll("input, textarea, select"); // Adjust selector for your form fields
-    const messageContainer = document.createElement('div'); // Message container for feedback
+    const profilesDropdown = document.getElementById("profiles");
+    const fillButton = document.getElementById("fill");
 
-    // Add the message container to the page
-    document.body.appendChild(messageContainer);
-    messageContainer.style.cssText = "margin-top: 10px; text-align: center; color: green; font-weight: bold;";
+    let profiles = [];
 
-    // Save draft to Chrome storage
-    saveButton.addEventListener("click", () => {
-        const formData = {};
-
-        // Collect data from all fields
-        formFields.forEach(field => {
-            formData[field.name || field.id] = field.value; // Use 'name' or 'id' as the key
-        });
-
-        // Get the current tab's URL
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-            const currentUrl = tabs[0].url;
-
-            const draftData = {
-                url: currentUrl,
-                data: formData
-            };
-
-            // Save to Chrome storage
-            chrome.storage.local.set({ draft: draftData }, () => {
-                // Show a success message
-                messageContainer.textContent = "Draft saved successfully!";
-                setTimeout(() => {
-                    messageContainer.textContent = ""; // Clear the message after 3 seconds
-                }, 3000);
-            });
-        });
+    // Load profiles from chrome.storage.local
+    chrome.storage.local.get(["profiles"], (result) => {
+        profiles = result.profiles || [];
+        loadProfiles();
     });
 
-    // Reload saved draft from Chrome storage
-    reloadButton.addEventListener("click", () => {
-        chrome.storage.local.get("draft", (result) => {
-            const draft = result.draft;
+    // Load profiles into the dropdown
+    function loadProfiles() {
+        profilesDropdown.innerHTML = ""; // Clear the dropdown
+        profiles.forEach((profile, index) => {
+            const option = document.createElement("option");
+            option.value = index;
+            option.textContent = profile.name || `Profile ${index + 1}`;
+            profilesDropdown.appendChild(option);
+        });
 
-            if (draft) {
-                const currentUrl = window.location.href;
+        // Select the first profile if available
+        if (profiles.length > 0) {
+            profilesDropdown.value = 0;
+        }
+    }
 
-                // Check if the draft matches the current URL
-                if (draft.url === currentUrl) {
-                    // Populate fields with saved data
-                    Object.entries(draft.data).forEach(([key, value]) => {
-                        const field = document.querySelector(`[name="${key}"], [id="${key}"]`);
-                        if (field) field.value = value;
-                    });
+    // Fill in the form with the selected profile's data
+    fillButton.addEventListener("click", () => {
+        const selectedIndex = profilesDropdown.value;
+        if (selectedIndex === null || profiles.length === 0) {
+            alert("No profiles available to fill the form!");
+            return;
+        }
 
-                    // Show a success message
-                    messageContainer.textContent = "Form filled with saved draft!";
-                    setTimeout(() => {
-                        messageContainer.textContent = ""; // Clear the message after 3 seconds
-                    }, 3000);
-                } else {
-                    alert("No saved draft found for this website.");
-                }
-            } else {
-                alert("No draft saved.");
+        const selectedProfile = profiles[selectedIndex];
+        const formFields = document.querySelectorAll("input, textarea");
+
+        // Populate form fields based on profile data
+        Object.keys(selectedProfile).forEach((key) => {
+            const field = document.getElementById(`${key}Field`);
+            if (field) {
+                field.value = selectedProfile[key];
             }
         });
+
+        alert("Form filled successfully!");
     });
 });

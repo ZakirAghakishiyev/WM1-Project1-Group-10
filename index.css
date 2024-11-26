@@ -81,5 +81,21 @@ input:focus{
     border-width: 3px;
 }
 
+select {
+    display: block;
+    margin: 10px auto;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 60%;
+    box-sizing: border-box;
+}
+
+label{
+    display: block;
+    margin: 10px auto;
+    width: 60%;
+    box-sizing: border-box; 
+}
 
   
