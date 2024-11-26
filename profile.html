@@ -1,38 +1,52 @@
-<html>
-    <head>
-        <link rel="stylesheet" href="navigaton.css">    
-        <link rel="stylesheet" href="profile.css">    
-        <title>Extension</title>
-    </head>
-    <body>
-        <div class="nav">
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="dashboard.html">Dashboard</a></li>
-                <li><a href="profile.html">Profiles</a></li>
-                <li><a href="https://www.linkedin.com/" target="_blank">Linkedin</a></li>
-            </ul>
-        </div>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="navigaton.css">
+    <title>Profile Manager</title>
+    <style>
+        html, body {
+            width: 600px; 
+            height: 700px;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="profile.html">Profiles</a></li>
+            <li><a href="https://www.linkedin.com/" target="_blank">Linkedin</a></li>
+        </ul>
+    </div>
+    <h1>Profile Manager</h1>
+    <div id="profileSwitcher">
+        <button id="newProfile">New Profile</button>
+        <button id="deleteProfile">Delete Profile</button>
+        <label for="profiles">Select Profile:</label>
+        <select id="profiles"></select>
+    </div>
 
-        <div id="profileSwitcher">
-            <label for="profiles">Select Profile:</label>
-            <select id="profiles"></select>
-            <button onclick="createNewProfile()">New Profile</button>
-        </div>
-    
-        <div id="predefinedFieldsForm">
-            <h3>LinkedIn Fields</h3>
-            Name: <input type="text" id="nameField" placeholder="Name">
-            Surname: <input type="text" id="surnameField" placeholder="Surname">
-            Summary: <textarea id="summaryField" placeholder="Summary"></textarea>
-            Location: <input type="text" id="locationField" placeholder="Location">
-            Education: <textarea id="educationField" placeholder="Education"></textarea>
-            Experience: <textarea id="experienceField" placeholder="Experience"></textarea>
-            Skills: <textarea id="skillsField" placeholder="Skills"></textarea>
-            Certifications: <textarea id="certificationsField" placeholder="Certifications"></textarea>
-            Portfolio: <input type="text" id="portfolioField" placeholder="Portfolio Link">
-        </div>
+    <div id="fieldsContainer">
+        <h3>LinkedIn Fields</h3>
+        Name: <input type="text" id="nameField" placeholder="Name"><br>
+        Surname: <input type="text" id="surnameField" placeholder="Surname"><br>
+        Summary: <textarea id="summaryField" placeholder="Summary"></textarea><br>
+        Location: <input type="text" id="locationField" placeholder="Location"><br>
+        Education: <textarea id="educationField" placeholder="Education"></textarea><br>
+        Experience: <textarea id="experienceField" placeholder="Experience"></textarea><br>
+        Skills: <textarea id="skillsField" placeholder="Skills"></textarea><br>
+        Certifications: <textarea id="certificationsField" placeholder="Certifications"></textarea><br>
+        Cover Letter: <textarea id="coverLetter" placeholder="Cover Letter"></textarea><br>
+        <button id="generate">Generate Cover Letter</button><br>
+        <script src="AI_API.js"></script>
+        Portfolio: <input type="text" id="portfolioField" placeholder="Portfolio Link"><br>
+        <button id="saveData">Save</button>
+        <button id="sendEmail">Send via Email</button>
+    </div>
 
-        <script src="profile.js"></script>
-
+    <script src="profile.js"></script>
+</body>
 </html>
