@@ -121,3 +121,53 @@ document.addEventListener("DOMContentLoaded", () => {
         setActiveProfile(event.target.value);
     });
 });
+
+document.getElementById('generate').addEventListener('click', runAI)
+
+
+// import { GoogleGenerativeAI } from './AI_API.js';
+
+// const genAI = new GoogleGenerativeAI('YOUR_API_KEY');
+
+// // Use `genAI` in your code
+// console.log(genAI);
+
+
+async function runAI() {
+    const genAI = new window.GoogleGenerativeAI(
+        "AIzaSyBZeob5l70IU0BNo4Lj981_3nJ-Cs4P7GI"
+    );
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+
+    const prompt = 'tell me about yourself';
+
+    let retries = 3; // Number of retries
+    let delay = 5000; // Delay between retries in milliseconds
+    let aiOutput = ""; // Variable to store the AI response
+
+    for (let attempt = 1; attempt <= retries; attempt++) {
+        try {
+            console.log(`Attempt ${attempt}...`);
+            const result = await model.generateContent({ contents: [prompt] });
+            aiOutput = result.response.candidates[0].content.parts[0].text; // Save the response to a variable
+            console.log("Generated Response:", aiOutput);
+
+            // Write the AI output to the textarea with id "coverLetter"
+            document.getElementById("coverLetter").value = aiOutput;
+            return; // Exit after a successful response
+        } catch (error) {
+            if (attempt < retries) {
+                console.error(
+                    `Error during API call (Attempt ${attempt}):`,
+                    error.message
+                );
+                console.log(`Retrying in ${delay / 1000} seconds...`);
+                await new Promise((res) => setTimeout(res, delay));
+            } else {
+                console.error("All retry attempts failed. Please try again later.");
+                return;
+            }
+        }
+    }
+}
+    
