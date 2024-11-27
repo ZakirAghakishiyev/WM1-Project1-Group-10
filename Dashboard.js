@@ -2,30 +2,38 @@ const jobForm = document.getElementById("jobForm");
 const jobList = document.getElementById("jobList");
 
 let jobs = JSON.parse(localStorage.getItem("jobs")) || [];
-let editIndex = -1; 
+let editIndex = -1;
 
-
-//following function is written according to W3 schools JSON section
+// Save jobs to localStorage
 function saveJobs() {
     localStorage.setItem("jobs", JSON.stringify(jobs));
 }
 
-//With the help of ChatGPT I learned how to map saved items into a table and save there
+// Display jobs in the table
 function displayJobs() {
     jobList.innerHTML = jobs.map((job, index) => `
-        <tr>
+        <tr data-index="${index}">
             <td>${job.company}</td>
             <td>${job.jobTitle}</td>
             <td>${new Date(job.dateApplied).toLocaleDateString()}</td>
             <td>${job.status}</td>
             <td>
-                <button onclick="editJob(${index})">Edit</button>
-                <button onclick="deleteJob(${index})">Delete</button>
+                <button class="edit-btn">Edit</button>
+                <button class="delete-btn">Delete</button>
             </td>
         </tr>
     `).join("");
+
+    // Attach event listeners to buttons
+    document.querySelectorAll(".edit-btn").forEach((button, idx) => {
+        button.addEventListener("click", () => editJob(idx));
+    });
+    document.querySelectorAll(".delete-btn").forEach((button, idx) => {
+        button.addEventListener("click", () => deleteJob(idx));
+    });
 }
 
+// Handle form submission
 jobForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -48,12 +56,14 @@ jobForm.addEventListener("submit", (e) => {
     jobForm.reset();
 });
 
+// Delete a job
 function deleteJob(index) {
     jobs.splice(index, 1);
     saveJobs();
     displayJobs();
 }
 
+// Edit a job
 function editJob(index) {
     const job = jobs[index];
     document.getElementById("company").value = job.company;
@@ -61,7 +71,8 @@ function editJob(index) {
     document.getElementById("dateApplied").value = job.dateApplied;
     document.getElementById("status").value = job.status;
 
-    editIndex = index; 
+    editIndex = index;
 }
 
+// Initialize the app
 displayJobs();
