@@ -30,10 +30,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    let activeProfile
     // Set the active profile and populate fields
     function setActiveProfile(index) {
         activeProfileIndex = parseInt(index, 10);
-        const activeProfile = profiles[activeProfileIndex];
+        activeProfile = profiles[activeProfileIndex];
         document.getElementById("nameField").value = activeProfile.name || "";
         document.getElementById("surnameField").value = activeProfile.surname || "";
         document.getElementById("summaryField").value = activeProfile.summary || "";
@@ -120,9 +121,63 @@ document.addEventListener("DOMContentLoaded", () => {
     profilesDropdown.addEventListener("change", (event) => {
         setActiveProfile(event.target.value);
     });
+
+    document.getElementById('generate').addEventListener('click', runAI)
+    
+    async function runAI() {
+        if(activeProfile==null){
+            return alert('Select a profile for generating cover letter')
+        }
+        console.log(activeProfile)
+
+        const genAI = new window.GoogleGenerativeAI(
+            "AIzaSyBZeob5l70IU0BNo4Lj981_3nJ-Cs4P7GI"
+        );
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+    
+        const prompt = `Write a professional cover letter for a job application. The name of applicant is ${activeProfile.name} ${activeProfile.surname}. They have experience in ${activeProfile.experience} and their skills include ${activeProfile.skills}. Here is a summary of their qualifications: ${activeProfile.summary}.`;
+    
+        console.log(prompt)
+        
+        let retries = 3; // Number of retries
+        let delay = 5000; // Delay between retries in milliseconds
+        let aiOutput = ""; // Variable to store the AI response
+    
+        for (let attempt = 1; attempt <= retries; attempt++) {
+            try {
+                console.log(`Attempt ${attempt}...`);
+                const result = await model.generateContent(prompt);
+    
+                // Extract the text from the AI response
+                aiOutput = result.response.text();
+    
+                console.log("Generated Response:", aiOutput);
+    
+                // Write the AI output to the textarea with id "coverLetter"
+                const coverLetterTextarea = document.getElementById("coverLetter");
+                if (coverLetterTextarea) {
+                    coverLetterTextarea.value = aiOutput; // Write response to textarea
+                } else {
+                    console.error("Textarea with id 'coverLetter' not found.");
+                }
+                return; // Exit after a successful response
+            } catch (error) {
+                if (attempt < retries) {
+                    console.error(
+                        `Error during API call (Attempt ${attempt}):`,
+                        error.message
+                    );
+                    console.log(`Retrying in ${delay / 1000} seconds...`);
+                    await new Promise((res) => setTimeout(res, delay));
+                } else {
+                    console.error("All retry attempts failed. Please try again later.");
+                    return;
+                }
+            }
+        }
+    }
 });
 
-document.getElementById('generate').addEventListener('click', runAI)
 
 
 // import { GoogleGenerativeAI } from './AI_API.js';
@@ -133,13 +188,13 @@ document.getElementById('generate').addEventListener('click', runAI)
 // console.log(genAI);
 
 
-async function runAI() {
+async function runAI(activeProfile) {
     const genAI = new window.GoogleGenerativeAI(
         "AIzaSyBZeob5l70IU0BNo4Lj981_3nJ-Cs4P7GI"
     );
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
-    const prompt = 'tell me about yourself';
+    const prompt = `Write a professional cover letter for a job application. The name of applicant is ${activeProfile.name} ${activeProfile.surname}. They have experience in ${activeProfile.experience} and their skills include ${activeProfile.skills}. Here is a summary of their qualifications: ${activeProfile.summary}.`;
 
     let retries = 3; // Number of retries
     let delay = 5000; // Delay between retries in milliseconds
@@ -148,12 +203,20 @@ async function runAI() {
     for (let attempt = 1; attempt <= retries; attempt++) {
         try {
             console.log(`Attempt ${attempt}...`);
-            const result = await model.generateContent({ contents: [prompt] });
-            aiOutput = result.response.candidates[0].content.parts[0].text; // Save the response to a variable
+            const result = await model.generateContent(prompt);
+
+            // Extract the text from the AI response
+            aiOutput = result.response.text();
+
             console.log("Generated Response:", aiOutput);
 
             // Write the AI output to the textarea with id "coverLetter"
-            document.getElementById("coverLetter").value = aiOutput;
+            const coverLetterTextarea = document.getElementById("coverLetter");
+            if (coverLetterTextarea) {
+                coverLetterTextarea.value = aiOutput; // Write response to textarea
+            } else {
+                console.error("Textarea with id 'coverLetter' not found.");
+            }
             return; // Exit after a successful response
         } catch (error) {
             if (attempt < retries) {
@@ -170,4 +233,33 @@ async function runAI() {
         }
     }
 }
-    
+
+const downloadProfileButton = document.getElementById("downloadProfile");
+
+downloadProfileButton.addEventListener("click", () => {
+    if (activeProfileIndex === null) {
+        alert("No profile selected to download!");
+        return;
+    }
+
+    const activeProfile = profiles[activeProfileIndex];
+
+    // Create a JSON string of the active profile
+    const profileData = JSON.stringify(activeProfile, null, 2);
+
+    // Create a Blob object from the JSON string
+    const blob = new Blob([profileData], { type: "application/json" });
+
+    // Create a download link
+    const downloadLink = document.createElement("a");
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = `${activeProfile.name || "profile"}.json`;
+
+    // Append the link, trigger the download, and then remove the link
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+
+    alert("Profile downloaded successfully!");
+});
+
