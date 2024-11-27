@@ -1,7 +1,6 @@
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="pen.ico">
     <link rel="stylesheet" href="profile.css">
     <link rel="stylesheet" href="navigaton.css">
     <title>Profile Manager</title>
@@ -33,6 +32,9 @@
         <h3>LinkedIn Fields</h3>
         Name: <input type="text" id="nameField" placeholder="Name"><br>
         Surname: <input type="text" id="surnameField" placeholder="Surname"><br>
+        Date of Birth: <input type="date" id="birthday" placeholder="Birthday"><br>
+        Phone Number: <input type="tel" id="phoneNumber" placeholder="Phone Number"><br>
+        Email: <input type="email" id="email" placeholder="Email"><br>
         Summary: <textarea id="summaryField" placeholder="Summary"></textarea><br>
         Location: <input type="text" id="locationField" placeholder="Location"><br>
         Education: <textarea id="educationField" placeholder="Education"></textarea><br>
@@ -44,9 +46,17 @@
         <script src="AI_API.js"></script>
         Portfolio: <input type="text" id="portfolioField" placeholder="Portfolio Link"><br>
         <button id="saveData">Save</button>
-        <button id="sendEmail">Send via Email</button>
+        <div class="container">
+            <button id="fill">Fill in the Form</button>
+        </div>
+        <div id="export">
+            <button id="sendEmail">Send via Email</button>
+            <button id="downloadProfile">Download Profile</button>
+        </div>
+
     </div>
 
-    <script src="profile.js"></script>
+    <script src="profile.js" type="module"></script>
+    <script src="AI_API.js" type="module"></script>    
 </body>
 </html>

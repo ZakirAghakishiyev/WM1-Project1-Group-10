@@ -37,12 +37,16 @@ document.addEventListener("DOMContentLoaded", () => {
         activeProfile = profiles[activeProfileIndex];
         document.getElementById("nameField").value = activeProfile.name || "";
         document.getElementById("surnameField").value = activeProfile.surname || "";
+        document.getElementById("birthday").value = activeProfile.birthday || ""; 
+        document.getElementById("phoneNumber").value = activeProfile.phoneNumber || ""; 
+        document.getElementById("email").value = activeProfile.email || ""; 
         document.getElementById("summaryField").value = activeProfile.summary || "";
         document.getElementById("locationField").value = activeProfile.location || "";
         document.getElementById("educationField").value = activeProfile.education || "";
         document.getElementById("experienceField").value = activeProfile.experience || "";
         document.getElementById("skillsField").value = activeProfile.skills || "";
         document.getElementById("certificationsField").value = activeProfile.certifications || "";
+        document.getElementById("coverLetter").value = activeProfile.coverLetter || ""; 
         document.getElementById("portfolioField").value = activeProfile.portfolio || "";
     }
 
@@ -52,12 +56,16 @@ document.addEventListener("DOMContentLoaded", () => {
         profiles[activeProfileIndex] = {
             name: document.getElementById("nameField").value,
             surname: document.getElementById("surnameField").value,
+            birthday: document.getElementById("birthday").value,
+            phoneNumber: document.getElementById("phoneNumber").value,
+            email: document.getElementById("email").value,
             summary: document.getElementById("summaryField").value,
             location: document.getElementById("locationField").value,
             education: document.getElementById("educationField").value,
             experience: document.getElementById("experienceField").value,
             skills: document.getElementById("skillsField").value,
             certifications: document.getElementById("certificationsField").value,
+            coverLetter: document.getElementById("coverLetter").value,
             portfolio: document.getElementById("portfolioField").value
         };
         chrome.storage.local.set({ profiles }, () => {
@@ -73,11 +81,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 name: profileName,
                 surname: "",
                 summary: "",
+                birthday: "",
+                phoneNumber: "",
+                email: "",
                 location: "",
                 education: "",
                 experience: "",
                 skills: "",
                 certifications: "",
+                coverLetter: "",
                 portfolio: ""
             };
             profiles.push(newProfile);
@@ -105,13 +117,18 @@ document.addEventListener("DOMContentLoaded", () => {
         const emailBody = `
             Name: ${activeProfile.name}
             Surname: ${activeProfile.surname}
+            Date of Birth: ${activeProfile.birthday}
+            Phone Number: ${activeProfile.phoneNumber}
+            Email: ${activeProfile.email}
             Summary: ${activeProfile.summary}
             Location: ${activeProfile.location}
             Education: ${activeProfile.education}
             Experience: ${activeProfile.experience}
             Skills: ${activeProfile.skills}
             Certifications: ${activeProfile.certifications}
+            Cover Letter: ${activeProfile.coverLetter}
             Portfolio: ${activeProfile.portfolio}
+
         `;
         const mailtoLink = `mailto:?subject=Profile Data&body=${encodeURIComponent(emailBody)}`;
         window.location.href = mailtoLink;
@@ -135,10 +152,10 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
     
-        const prompt = `Write a professional cover letter for a job application. The name of applicant is ${activeProfile.name} ${activeProfile.surname}. They have experience in ${activeProfile.experience} and their skills include ${activeProfile.skills}. Here is a summary of their qualifications: ${activeProfile.summary}.`;
+        const prompt = `Write a professional cover letter for a job application. The name of applicant is ${activeProfile.name} ${activeProfile.surname}. They have experience in ${activeProfile.experience} and their skills include ${activeProfile.skills}. Here is a summary of their qualifications: ${activeProfile.summary}. Do not iclude the fields that are not given such as mail, phone number and etc.`;
     
         console.log(prompt)
-        
+
         let retries = 3; // Number of retries
         let delay = 5000; // Delay between retries in milliseconds
         let aiOutput = ""; // Variable to store the AI response
@@ -234,32 +251,89 @@ async function runAI(activeProfile) {
     }
 }
 
-const downloadProfileButton = document.getElementById("downloadProfile");
 
-downloadProfileButton.addEventListener("click", () => {
-    if (activeProfileIndex === null) {
+    
+// Fill the form on the website when the button is clicked
+document.getElementById("fill").addEventListener("click", async () => {
+    // Retrieve the profiles from Chrome storage
+    chrome.storage.local.get("profiles", (result) => {
+        const profiles = result.profiles || {};
+        const currentProfile = document.getElementById("profiles").value;
+
+        if (!currentProfile || !profiles[currentProfile]) {
+            alert("No profile selected or profile data is empty.");
+            return;
+        }
+
+        const profileData = profiles[currentProfile];
+
+        // Use Chrome's scripting API to inject code into the active tab
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            chrome.scripting.executeScript({
+                target: { tabId: tabs[0].id },
+                func: fillWebsiteForm,
+                args: [profileData], // Pass the profile data to the function
+            });
+        });
+    });
+});
+
+// Function to be executed on the active tab to fill in the form
+function fillWebsiteForm(profileData) {
+    // Map the profile fields to the website form fields (update selectors as needed)
+    const fieldMappings = {
+        name: "input[name='name']",
+        surname: "input[name='surname']",
+        birthday: "input[name='birthday']",
+        phoneNumber: "input[name='phone_number']",
+        email: "input[name='email']",
+        summary: "textarea[name='summary']",
+        location: "input[name='location']",
+        education: "textarea[name='education']",
+        experience: "textarea[name='experience']",
+        skills: "textarea[name='skills']",
+        certifications: "textarea[name='certifications']",
+        coverLetter: "textarea[name='cover_letter']",
+        portfolio: "input[name='portfolio']"
+    };
+
+    // Iterate through the field mappings and populate the form fields
+    for (const [profileKey, selector] of Object.entries(fieldMappings)) {
+        const element = document.querySelector(selector);
+        if (element && profileData[profileKey]) {
+            element.value = profileData[profileKey];
+        }
+    }
+    alert("Form filled with the selected profile data!");
+}
+
+document.getElementById("downloadProfile").addEventListener("click", () => {
+    const profileSelector = document.getElementById("profiles");
+    const selectedProfileName = profileSelector.value;
+
+    if (!selectedProfileName) {
         alert("No profile selected to download!");
         return;
     }
 
-    const activeProfile = profiles[activeProfileIndex];
+    chrome.storage.local.get("profiles", (result) => {
+        const profiles = result.profiles || {};
+        const selectedProfile = profiles[selectedProfileName];
 
-    // Create a JSON string of the active profile
-    const profileData = JSON.stringify(activeProfile, null, 2);
+        if (!selectedProfile) {
+            alert("The selected profile does not exist.");
+            return;
+        }
 
-    // Create a Blob object from the JSON string
-    const blob = new Blob([profileData], { type: "application/json" });
+        const profileData = JSON.stringify(selectedProfile, null, 2);
+        const blob = new Blob([profileData], { type: "application/json" });
+        const downloadLink = document.createElement("a");
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.download = `${selectedProfileName}.json`;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
 
-    // Create a download link
-    const downloadLink = document.createElement("a");
-    downloadLink.href = URL.createObjectURL(blob);
-    downloadLink.download = `${activeProfile.name || "profile"}.json`;
-
-    // Append the link, trigger the download, and then remove the link
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-
-    alert("Profile downloaded successfully!");
+        alert(`Profile "${selectedProfileName}" downloaded successfully!`);
+    });
 });
-
