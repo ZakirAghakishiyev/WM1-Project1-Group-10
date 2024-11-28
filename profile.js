@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function setActiveProfile(index) {
         activeProfileIndex = parseInt(index, 10);
         activeProfile = profiles[activeProfileIndex];
+        document.getElementById("linkedin").value = activeProfile.linkedin || "";
         document.getElementById("nameField").value = activeProfile.name || "";
         document.getElementById("surnameField").value = activeProfile.surname || "";
         document.getElementById("birthday").value = activeProfile.birthday || ""; 
@@ -54,6 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     saveButton.addEventListener("click", () => {
         if (activeProfileIndex === null) return;
         profiles[activeProfileIndex] = {
+            linkedin: document.getElementById("linkedin").value,
             name: document.getElementById("nameField").value,
             surname: document.getElementById("surnameField").value,
             birthday: document.getElementById("birthday").value,
@@ -78,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const profileName = prompt("Enter a name for the new profile:");
         if (profileName) {
             const newProfile = {
+                linkedin: "",
                 name: profileName,
                 surname: "",
                 summary: "",
@@ -115,25 +118,25 @@ document.addEventListener("DOMContentLoaded", () => {
         if (activeProfileIndex === null) return;
         const activeProfile = profiles[activeProfileIndex];
         const emailBody = `
+            Linkedin: ${activeProfile.linkedin}
             Name: ${activeProfile.name}
             Surname: ${activeProfile.surname}
             Date of Birth: ${activeProfile.birthday}
             Phone Number: ${activeProfile.phoneNumber}
             Email: ${activeProfile.email}
+        ----------------------------------------------------
             Summary: ${activeProfile.summary}
+        ----------------------------------------------------
             Location: ${activeProfile.location}
             Education: ${activeProfile.education}
             Experience: ${activeProfile.experience}
             Skills: ${activeProfile.skills}
             Certifications: ${activeProfile.certifications}
-            Cover Letter: ${activeProfile.coverLetter}
             Portfolio: ${activeProfile.portfolio}
-
         `;
         const mailtoLink = `mailto:?subject=Profile Data&body=${encodeURIComponent(emailBody)}`;
         window.location.href = mailtoLink;
     });
-
     // Handle dropdown change to update active profile
     profilesDropdown.addEventListener("change", (event) => {
         setActiveProfile(event.target.value);
@@ -282,6 +285,7 @@ document.getElementById("fill").addEventListener("click", async () => {
 function fillWebsiteForm(profileData) {
     // Map the profile fields to the website form fields (update selectors as needed)
     const fieldMappings = {
+        linkedin: "input[name='linkedin']",
         name: "input[name='name']",
         surname: "input[name='surname']",
         birthday: "input[name='birthday']",
@@ -337,3 +341,50 @@ document.getElementById("downloadProfile").addEventListener("click", () => {
         alert(`Profile "${selectedProfileName}" downloaded successfully!`);
     });
 });
+
+document.getElementById("importProfile").addEventListener("click", () => {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "application/json";
+    fileInput.style.display = "none";
+    document.body.appendChild(fileInput);
+
+    fileInput.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            try {
+                const importedData = JSON.parse(reader.result);
+
+                // Populate the fields
+                document.getElementById("linkedin").value = importedData.linkedin || "";
+                document.getElementById("nameField").value = importedData.name || "";
+                document.getElementById("surnameField").value = importedData.surname || "";
+                document.getElementById("birthday").value = importedData.birthday || "";
+                document.getElementById("phoneNumber").value = importedData.phoneNumber || "";
+                document.getElementById("email").value = importedData.email || "";
+                document.getElementById("summaryField").value = importedData.summary || "";
+                document.getElementById("locationField").value = importedData.location || "";
+                document.getElementById("educationField").value = importedData.education || "";
+                document.getElementById("experienceField").value = importedData.experience || "";
+                document.getElementById("skillsField").value = importedData.skills || "";
+                document.getElementById("certificationsField").value = importedData.certifications || "";
+                document.getElementById("coverLetter").value = importedData.coverLetter || "";
+                document.getElementById("portfolioField").value = importedData.portfolio || "";
+
+                alert("Profile data imported successfully!");
+            } catch (error) {
+                alert("Invalid JSON file. Please check the file and try again.");
+            }
+        };
+
+        reader.readAsText(file);
+    });
+
+    fileInput.click();
+    document.body.removeChild(fileInput);
+});
+
+

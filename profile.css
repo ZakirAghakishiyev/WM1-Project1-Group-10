@@ -52,22 +52,71 @@ button {
 }
 
 button#saveData {
-    background-color: #007bff;
+    background-color: #007bff; /* Blue */
     color: white;
     width: 100%;
 }
 
 button#saveData:hover {
-    background-color: #0056b3;
+    background-color: #0056b3; /* Darker Blue */
 }
 
 button#sendEmail {
-    background-color: #17a2b8;
+    background-color: #17a2b8; /* Teal */
     color: white;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    flex: 1;
+    text-align: center;
 }
 
 button#sendEmail:hover {
-    background-color: #117a8b;
+    background-color: #117a8b; /* Darker Teal */
+}
+
+button#downloadProfile {
+    background-color: #28a745; /* Green */
+    color: white;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    flex: 1;
+    text-align: center;
+}
+
+button#downloadProfile:hover {
+    background-color: #218838; /* Darker Green */
+}
+
+button#importProfile {
+    background-color: #ff9900; /* Orange */
+    color: white;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    flex: 1;
+    text-align: center;
+}
+
+button#importProfile:hover {
+    background-color: #cc7a00; /* Darker Orange */
+}
+
+#export {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    justify-content: space-between;
 }
 
 button#newProfile, button#deleteProfile {
@@ -79,8 +128,20 @@ button#newProfile, button#deleteProfile {
     font-weight: bold;
     cursor: pointer;
     color: white;
-    background-color: #dc3545;
+    background-color: #dc3545; /* Red */
     border: none;
+}
+
+button#deleteProfile:hover {
+    background-color: #c82333; /* Darker Red */
+}
+
+button#newProfile {
+    background-color: #0056b3; /* Blue */
+}
+
+button#newProfile:hover {
+    background-color: #013f80; /* Darker Blue */
 }
 
 button#generate {
@@ -92,24 +153,12 @@ button#generate {
     font-weight: bold;
     cursor: pointer;
     color: white;
-    background-color: #0056b3;
+    background-color: #0056b3; /* Blue */
     border: none;
 }
 
 button#generate:hover {
-    background-color: #013f80;
-}
-
-button#newProfile {
-    background-color: #0056b3;
-}
-
-button#deleteProfile:hover {
-    background-color: #c82333;
-}
-
-button#newProfile:hover {
-    background-color: #013f80;
+    background-color: #013f80; /* Darker Blue */
 }
 
 textarea {
@@ -143,30 +192,8 @@ th {
     overflow-y: auto;
 }
 
-button#downloadProfile {
-    margin: 0 10px 10px 0;
-    padding: 12px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    background-color: #28a745;
-    color: white;
-}
-
-button#downloadProfile:hover {
-    background-color: #218838; 
-}
-
-#export {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-
 button#fill {
-    background-color: #ff9900;
+    background-color: #ffc107; /* Yellow */
     color: white;
     padding: 12px;
     border-radius: 5px;
@@ -180,5 +207,33 @@ button#fill {
 }
 
 button#fill:hover {
-    background-color: #cc7a00;
+    background-color: #cc9a06; /* Darker Yellow */
+}
+
+#pull {
+    text-align: center;
+    margin: 20px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#scrap {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#scrap:hover {
+    background-color: #0056b3;
+}
+
+#pull p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
 }

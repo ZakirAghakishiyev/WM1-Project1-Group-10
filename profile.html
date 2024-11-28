@@ -29,7 +29,12 @@
     </div>
 
     <div id="fieldsContainer">
+        <div id="pull">
+            <button id="scrap">Pull fields from LinkedIn</button>
+            <p>Note: This button only pulls name and surname from LinkedIn</p>
+        </div>
         <h3>LinkedIn Fields</h3>
+        Linkedin: <input type="text" id="linkedin" placeholder="Linkedin"><br>
         Name: <input type="text" id="nameField" placeholder="Name"><br>
         Surname: <input type="text" id="surnameField" placeholder="Surname"><br>
         Date of Birth: <input type="date" id="birthday" placeholder="Birthday"><br>
@@ -46,12 +51,11 @@
         <script src="AI_API.js"></script>
         Portfolio: <input type="text" id="portfolioField" placeholder="Portfolio Link"><br>
         <button id="saveData">Save</button>
-        <div class="container">
-            <button id="fill">Fill in the Form</button>
-        </div>
+        <button id="fill">Fill in the Form</button>
         <div id="export">
             <button id="sendEmail">Send via Email</button>
             <button id="downloadProfile">Download Profile</button>
+            <button id="importProfile">Import Profile</button>
         </div>
 
     </div>
