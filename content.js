@@ -51,8 +51,7 @@ reloadButton.style.color = '#fff';
 buttonContainer.appendChild(saveButton);
 buttonContainer.appendChild(reloadButton);
 
-// Add the container to the webpage
-document.body.appendChild(buttonContainer);
+
 
 // Function to save the draft
 saveButton.addEventListener('click', () => {
@@ -92,3 +91,38 @@ reloadButton.addEventListener('click', () => {
         }
     });
 });
+
+if (window.location.href.includes('https://www.linkedin.com/in/')) {
+    const grabData = document.createElement('button');
+    grabData.innerText = 'Grab Linkedin Data';
+    grabData.style.margin = '5px';
+    grabData.style.padding = '10px';
+    grabData.style.border = 'none';
+    grabData.style.borderRadius = '3px';
+    grabData.style.cursor = 'pointer';
+    grabData.style.backgroundColor = '#2196F3';
+    grabData.style.color = '#fff';
+
+    buttonContainer.appendChild(grabData);
+
+    grabData.addEventListener('click', function () {
+        const name = document.querySelector('.GOeJUcPFHkspaBiXAWYmOCUxFmlczdTkRE.inline.t-24.v-align-middle.break-words').textContent.trim().split(' ')[0]
+        const surname = document.querySelector('.GOeJUcPFHkspaBiXAWYmOCUxFmlczdTkRE.inline.t-24.v-align-middle.break-words').textContent.trim().split(' ')[1]
+        const url = window.location.href
+
+        console.log(name)
+        console.log(surname)
+        console.log(url)
+
+        const user = { name: name, surname: surname, url: url }
+
+        chrome.storage.local.set({ userProfileData: user }, function () {
+            console.log("User data saved:", user);
+            sendResponse({ status: "success", message: "User data saved successfully" });
+        });
+    })
+
+}
+
+// Add the container to the webpage
+document.body.appendChild(buttonContainer);

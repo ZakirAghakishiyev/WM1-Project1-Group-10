@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+  
     const profileSelect = document.getElementById("profile");
     const applyButton = document.getElementById("applyProfile");
   
@@ -27,4 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   });
+  
+
+
   

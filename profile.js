@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let profiles = [];
     let activeProfileIndex = null;
 
-    // Load profiles from chrome.storage.local
     chrome.storage.local.get(["profiles"], (result) => {
         profiles = result.profiles || [];
         loadProfiles();
@@ -26,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (profiles.length > 0) {
             profilesDropdown.value = 0; // Set the first profile as default
-            setActiveProfile(0);
+            //setActiveProfile(0);
         }
     }
 
@@ -38,16 +37,16 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("linkedin").value = activeProfile.linkedin || "";
         document.getElementById("nameField").value = activeProfile.name || "";
         document.getElementById("surnameField").value = activeProfile.surname || "";
-        document.getElementById("birthday").value = activeProfile.birthday || ""; 
-        document.getElementById("phoneNumber").value = activeProfile.phoneNumber || ""; 
-        document.getElementById("email").value = activeProfile.email || ""; 
+        document.getElementById("birthday").value = activeProfile.birthday || "";
+        document.getElementById("phoneNumber").value = activeProfile.phoneNumber || "";
+        document.getElementById("email").value = activeProfile.email || "";
         document.getElementById("summaryField").value = activeProfile.summary || "";
         document.getElementById("locationField").value = activeProfile.location || "";
         document.getElementById("educationField").value = activeProfile.education || "";
         document.getElementById("experienceField").value = activeProfile.experience || "";
         document.getElementById("skillsField").value = activeProfile.skills || "";
         document.getElementById("certificationsField").value = activeProfile.certifications || "";
-        document.getElementById("coverLetter").value = activeProfile.coverLetter || ""; 
+        document.getElementById("coverLetter").value = activeProfile.coverLetter || "";
         document.getElementById("portfolioField").value = activeProfile.portfolio || "";
     }
 
@@ -143,9 +142,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.getElementById('generate').addEventListener('click', runAI)
-    
+
     async function runAI() {
-        if(activeProfile==null){
+        if (activeProfile == null) {
             return alert('Select a profile for generating cover letter')
         }
         console.log(activeProfile)
@@ -154,25 +153,24 @@ document.addEventListener("DOMContentLoaded", () => {
             "AIzaSyBZeob5l70IU0BNo4Lj981_3nJ-Cs4P7GI"
         );
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
-    
+
         const prompt = `Write a professional cover letter for a job application. The name of applicant is ${activeProfile.name} ${activeProfile.surname}. They have experience in ${activeProfile.experience} and their skills include ${activeProfile.skills}. Here is a summary of their qualifications: ${activeProfile.summary}. Do not iclude the fields that are not given such as mail, phone number and etc.`;
-    
+
         console.log(prompt)
 
-        let retries = 3; // Number of retries
-        let delay = 5000; // Delay between retries in milliseconds
-        let aiOutput = ""; // Variable to store the AI response
-    
+        let retries = 3;
+        let aiOutput = "";
+
         for (let attempt = 1; attempt <= retries; attempt++) {
             try {
                 console.log(`Attempt ${attempt}...`);
                 const result = await model.generateContent(prompt);
-    
+
                 // Extract the text from the AI response
                 aiOutput = result.response.text();
-    
+
                 console.log("Generated Response:", aiOutput);
-    
+
                 // Write the AI output to the textarea with id "coverLetter"
                 const coverLetterTextarea = document.getElementById("coverLetter");
                 if (coverLetterTextarea) {
@@ -217,7 +215,6 @@ async function runAI(activeProfile) {
     const prompt = `Write a professional cover letter for a job application. The name of applicant is ${activeProfile.name} ${activeProfile.surname}. They have experience in ${activeProfile.experience} and their skills include ${activeProfile.skills}. Here is a summary of their qualifications: ${activeProfile.summary}.`;
 
     let retries = 3; // Number of retries
-    let delay = 5000; // Delay between retries in milliseconds
     let aiOutput = ""; // Variable to store the AI response
 
     for (let attempt = 1; attempt <= retries; attempt++) {
@@ -255,7 +252,7 @@ async function runAI(activeProfile) {
 }
 
 
-    
+
 // Fill the form on the website when the button is clicked
 document.getElementById("fill").addEventListener("click", async () => {
     // Retrieve the profiles from Chrome storage
@@ -306,6 +303,9 @@ function fillWebsiteForm(profileData) {
         const element = document.querySelector(selector);
         if (element && profileData[profileKey]) {
             element.value = profileData[profileKey];
+
+            element.dispatchEvent(new Event("input", { bubbles: true }));
+            element.dispatchEvent(new Event("change", { bubbles: true }));
         }
     }
     alert("Form filled with the selected profile data!");
@@ -388,3 +388,14 @@ document.getElementById("importProfile").addEventListener("click", () => {
 });
 
 
+// Listen for messages from content scripts
+chrome.storage.local.get(["userProfileData"], function (result) {
+    if (result.userProfileData) {
+        console.log("Retrieved user data:", result.userProfileData);
+        document.getElementById('nameField').value = result.userProfileData.name
+        document.getElementById('surnameField').value = result.userProfileData.surname
+        document.getElementById('linkedin').value = result.userProfileData.url
+    } else {
+        console.log("No user data found.");
+    }
+});
