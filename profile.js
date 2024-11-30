@@ -17,7 +17,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Load profiles into dropdown
     function loadProfiles() {
-        profilesDropdown.innerHTML = ""; 
+        profilesDropdown.innerHTML = "";
+        const option1 = document.createElement("option");
+        option1.value = -1;
+        option1.textContent = "Select Profile..."
+        profilesDropdown.appendChild(option1);
+
         profiles.forEach((profile, index) => {
             const option = document.createElement("option");
             option.value = index;
@@ -26,13 +31,31 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         if (profiles.length > 0) {
-            profilesDropdown.value = 0; 
-            //setActiveProfile(0);
+            profilesDropdown.value = -1;
+            setActiveProfile(-1);
         }
     }
 
     let activeProfile
     function setActiveProfile(index) {
+        if (index == -1) {
+            console.log('dds')
+            document.getElementById("linkedin").value = "";
+            document.getElementById("nameField").value = "";
+            document.getElementById("surnameField").value = "";
+            document.getElementById("birthday").value = "";
+            document.getElementById("phoneNumber").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("summaryField").value = "";
+            document.getElementById("locationField").value = "";
+            document.getElementById("educationField").value = "";
+            document.getElementById("experienceField").value = "";
+            document.getElementById("skillsField").value = "";
+            document.getElementById("certificationsField").value = "";
+            document.getElementById("coverLetter").value = "";
+            document.getElementById("portfolioField").value = "";
+            return;
+        }
         activeProfileIndex = parseInt(index, 10);
         activeProfile = profiles[activeProfileIndex];
         document.getElementById("linkedin").value = activeProfile.linkedin || "";
@@ -54,6 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     saveButton.addEventListener("click", () => {
         if (activeProfileIndex === null) return;
+
         profiles[activeProfileIndex] = {
             linkedin: document.getElementById("linkedin").value,
             name: document.getElementById("nameField").value,
@@ -189,10 +213,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         `Error during API call (Attempt ${attempt}):`,
                         error.message
                     );
-                    console.log(`Retrying in ${delay / 1000} seconds...`);
-                    await new Promise((res) => setTimeout(res, delay));
+
                 } else {
-                    console.error("All retry attempts failed. Please try again later.");
+                    console.error("Please try again later.");
                     return;
                 }
             }
