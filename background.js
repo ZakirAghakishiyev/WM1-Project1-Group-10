@@ -1,3 +1,4 @@
+//https://chatgpt.com/share/674b3221-e1c8-8004-887f-cb12662c1a8e
 // chrome.runtime.onInstalled.addListener(() => {
 //   const profiles = [
 //     { name: "Zakir", surname: "Aghakishiyev", summary: "Experienced developer", location: "Baku" },

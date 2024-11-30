@@ -1,3 +1,5 @@
+// https://chatgpt.com/share/674b2f1f-d424-8004-b684-d17cab97e2de
+
 document.addEventListener("DOMContentLoaded", () => {
     const profilesDropdown = document.getElementById("profiles");
     const newProfileButton = document.getElementById("newProfile");
@@ -15,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Load profiles into dropdown
     function loadProfiles() {
-        profilesDropdown.innerHTML = ""; // Clear the dropdown
+        profilesDropdown.innerHTML = ""; 
         profiles.forEach((profile, index) => {
             const option = document.createElement("option");
             option.value = index;
@@ -24,13 +26,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         if (profiles.length > 0) {
-            profilesDropdown.value = 0; // Set the first profile as default
+            profilesDropdown.value = 0; 
             //setActiveProfile(0);
         }
     }
 
     let activeProfile
-    // Set the active profile and populate fields
     function setActiveProfile(index) {
         activeProfileIndex = parseInt(index, 10);
         activeProfile = profiles[activeProfileIndex];
@@ -49,8 +50,8 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("coverLetter").value = activeProfile.coverLetter || "";
         document.getElementById("portfolioField").value = activeProfile.portfolio || "";
     }
+    // https://chatgpt.com/share/674b2f1f-d424-8004-b684-d17cab97e2de
 
-    // Save the active profile's data
     saveButton.addEventListener("click", () => {
         if (activeProfileIndex === null) return;
         profiles[activeProfileIndex] = {
@@ -114,42 +115,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Send the active profile's data via email
     sendEmailButton.addEventListener("click", () => {
-        // Ensure profiles and activeProfileIndex are defined
-        if (typeof profiles === "undefined" || activeProfileIndex === null) {
-            alert("No profile selected or profiles not loaded.");
-            return;
-        }
-    
+        if (activeProfileIndex === null) return;
         const activeProfile = profiles[activeProfileIndex];
-        if (!activeProfile) {
-            alert("Active profile data is missing.");
-            return;
-        }
-    
-        // Build the email body
         const emailBody = `
-            Linkedin: ${activeProfile.linkedin || 'N/A'}
-            Name: ${activeProfile.name || 'N/A'}
-            Surname: ${activeProfile.surname || 'N/A'}
-            Date of Birth: ${activeProfile.birthday || 'N/A'}
-            Phone Number: ${activeProfile.phoneNumber || 'N/A'}
-            Email: ${activeProfile.email || 'N/A'}
+            Linkedin: ${activeProfile.linkedin}
+            Name: ${activeProfile.name}
+            Surname: ${activeProfile.surname}
+            Date of Birth: ${activeProfile.birthday}
+            Phone Number: ${activeProfile.phoneNumber}
+            Email: ${activeProfile.email}
         ----------------------------------------------------
-            Summary: ${activeProfile.summary || 'N/A'}
+            Summary: ${activeProfile.summary}
         ----------------------------------------------------
-            Location: ${activeProfile.location || 'N/A'}
-            Education: ${activeProfile.education || 'N/A'}
-            Experience: ${activeProfile.experience || 'N/A'}
-            Skills: ${activeProfile.skills || 'N/A'}
-            Certifications: ${activeProfile.certifications || 'N/A'}
-            Portfolio: ${activeProfile.portfolio || 'N/A'}
+            Location: ${activeProfile.location}
+            Education: ${activeProfile.education}
+            Experience: ${activeProfile.experience}
+            Skills: ${activeProfile.skills}
+            Certifications: ${activeProfile.certifications}
+            Portfolio: ${activeProfile.portfolio}
         `;
-    
-        // Generate mailto link
         const mailtoLink = `mailto:?subject=Profile Data&body=${encodeURIComponent(emailBody)}`;
         window.location.href = mailtoLink;
     });
-    
+    //https://chatgpt.com/share/674b2fec-9194-8004-9f95-65edb42a4b83
+    //https://stackoverflow.com/questions/68831782/sending-email-in-javascript
+
     // Handle dropdown change to update active profile
     profilesDropdown.addEventListener("change", (event) => {
         setActiveProfile(event.target.value);
@@ -265,7 +255,7 @@ async function runAI(activeProfile) {
     }
 }
 
-
+//https://www.youtube.com/watch?v=LgR1ZFoJKxA
 
 document.getElementById("fill").addEventListener("click", async () => {
     // Retrieve the profiles from Chrome storage
@@ -352,21 +342,21 @@ document.getElementById("downloadProfile").addEventListener("click", () => {
 });
 
 const fieldMapping = {
-  linkedin: ["linkedin","linkedIn", "linkedin_url", "profile_url", "linkedinprofile"],
-  nameField: ["name", "first_name", "firstname", "givenname", "first"],
-  surnameField: ["lastname", "last_name", "surname", "familyname", "secondname"],
-  birthday: ["dob", "dateofbirth", "birthdate", "birthday"],
-  phoneNumber: ["phone", "phone_number", "phonenumber", "contact"],
-  email: ["email", "email_address", "emailaddress"],
-  summaryField: ["summary", "profile_summary", "about", "description"],
-  locationField: ["location", "city", "town", "address", "region"],
-  educationField: ["education", "educations", "studies", "academic_experience"],
-  experienceField: ["experience", "experiences", "work_experience", "job_experience"],
-  skillsField: ["skills", "technical_skills", "soft_skills", "relevant_skills"],
-  certificationsField: ["certifications", "certs", "accreditations", "awards"],
-  coverLetter: ["coverletter", "cover_letter", "application_letter", "motivation"]
+    linkedin: ["linkedin", "linkedIn", "linkedin_url", "profile_url", "linkedinprofile"],
+    nameField: ["name", "first_name", "firstname", "givenname", "first"],
+    surnameField: ["lastname", "last_name", "surname", "familyname", "secondname"],
+    birthday: ["dob", "dateofbirth", "birthdate", "birthday"],
+    phoneNumber: ["phone", "phone_number", "phonenumber", "contact"],
+    email: ["email", "email_address", "emailaddress"],
+    summaryField: ["summary", "profile_summary", "about", "description"],
+    locationField: ["location", "city", "town", "address", "region"],
+    educationField: ["education", "educations", "studies", "academic_experience"],
+    experienceField: ["experience", "experiences", "work_experience", "job_experience"],
+    skillsField: ["skills", "technical_skills", "soft_skills", "relevant_skills"],
+    certificationsField: ["certifications", "certs", "accreditations", "awards"],
+    coverLetter: ["coverletter", "cover_letter", "application_letter", "motivation"]
 };
-
+//ChatGPT generated all the different id options
 
 
 document.getElementById("downloadProfile").addEventListener("click", () => {
@@ -445,15 +435,16 @@ document.getElementById("importProfile").addEventListener("click", () => {
     document.body.removeChild(fileInput);
 });
 
+document.getElementById('loadLinkedinData').addEventListener('click', function () {
+    chrome.storage.local.get(["userProfileData"], function (result) {
+        if (result.userProfileData) {
+            console.log("Retrieved user data:", result.userProfileData);
+            document.getElementById('nameField').value = result.userProfileData.name
+            document.getElementById('surnameField').value = result.userProfileData.surname
+            document.getElementById('linkedin').value = result.userProfileData.url
+        } else {
+            alert('No user data found.')
+        }
+    });
+})
 
-// Listen for messages from content scripts
-chrome.storage.local.get(["userProfileData"], function (result) {
-    if (result.userProfileData) {
-        console.log("Retrieved user data:", result.userProfileData);
-        document.getElementById('nameField').value = result.userProfileData.name
-        document.getElementById('surnameField').value = result.userProfileData.surname
-        document.getElementById('linkedin').value = result.userProfileData.url
-    } else {
-        console.log("No user data found.");
-    }
-});
