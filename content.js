@@ -33,8 +33,25 @@ saveButton.style.padding = '10px';
 saveButton.style.border = 'none';
 saveButton.style.borderRadius = '3px';
 saveButton.style.cursor = 'pointer';
-saveButton.style.backgroundColor = '#4CAF50';
+saveButton.style.backgroundColor = '#032b68';
 saveButton.style.color = '#fff';
+// Add hover effect
+saveButton.addEventListener('mouseover', () => {
+    saveButton.style.backgroundColor = '#0058b7'; // Slightly darker blue
+});
+
+saveButton.addEventListener('mouseout', () => {
+    saveButton.style.backgroundColor = '#032b68'; // Original color
+});
+
+// Add click effect
+saveButton.addEventListener('mousedown', () => {
+    saveButton.style.backgroundColor = '#328ced'; // Even darker blue for click
+});
+
+saveButton.addEventListener('mouseup', () => {
+    saveButton.style.backgroundColor = '#032b68'; // Return to hover color after click
+});
 
 // Create "Reload" button
 const reloadButton = document.createElement('button');
@@ -44,8 +61,25 @@ reloadButton.style.padding = '10px';
 reloadButton.style.border = 'none';
 reloadButton.style.borderRadius = '3px';
 reloadButton.style.cursor = 'pointer';
-reloadButton.style.backgroundColor = '#2196F3';
+reloadButton.style.backgroundColor = '#032b68';
 reloadButton.style.color = '#fff';
+// Add hover effect
+reloadButton.addEventListener('mouseover', () => {
+    reloadButton.style.backgroundColor = '#0058b7'; // Slightly darker blue
+});
+
+reloadButton.addEventListener('mouseout', () => {
+    reloadButton.style.backgroundColor = '#032b68'; // Original color
+});
+
+// Add click effect
+reloadButton.addEventListener('mousedown', () => {
+    reloadButton.style.backgroundColor = '#328ced'; // Even darker blue for click
+});
+
+reloadButton.addEventListener('mouseup', () => {
+    reloadButton.style.backgroundColor = '#032b68'; // Return to hover color after click
+});
 
 // Add buttons to the container
 buttonContainer.appendChild(saveButton);
@@ -100,8 +134,25 @@ if (window.location.href.includes('https://www.linkedin.com/in/')) {
     grabData.style.border = 'none';
     grabData.style.borderRadius = '3px';
     grabData.style.cursor = 'pointer';
-    grabData.style.backgroundColor = '#2196F3';
+    grabData.style.backgroundColor = '#032b68';
     grabData.style.color = '#fff';
+    // Add hover effect
+    grabData.addEventListener('mouseover', () => {
+        grabData.style.backgroundColor = '#0058b7'; // Slightly darker blue
+    });
+
+    grabData.addEventListener('mouseout', () => {
+        grabData.style.backgroundColor = '#032b68'; // Original color
+    });
+
+    // Add click effect
+    grabData.addEventListener('mousedown', () => {
+        grabData.style.backgroundColor = '#328ced'; // Even darker blue for click
+    });
+
+    grabData.addEventListener('mouseup', () => {
+         grabData.style.backgroundColor = '#032b68'; // Return to hover color after click
+    });
 
     buttonContainer.appendChild(grabData);
 
@@ -118,7 +169,10 @@ if (window.location.href.includes('https://www.linkedin.com/in/')) {
 
         chrome.storage.local.set({ userProfileData: user }, function () {
             console.log("User data saved:", user);
-            sendResponse({ status: "success", message: "User data saved successfully" });
+    
+            // Alert to notify the user
+            alert("Data Grabed. Open profiles in extension");
+
         });
     })
 

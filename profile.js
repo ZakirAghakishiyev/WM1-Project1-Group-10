@@ -114,28 +114,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Send the active profile's data via email
     sendEmailButton.addEventListener("click", () => {
-        if (activeProfileIndex === null) return;
+        // Ensure profiles and activeProfileIndex are defined
+        if (typeof profiles === "undefined" || activeProfileIndex === null) {
+            alert("No profile selected or profiles not loaded.");
+            return;
+        }
+    
         const activeProfile = profiles[activeProfileIndex];
+        if (!activeProfile) {
+            alert("Active profile data is missing.");
+            return;
+        }
+    
+        // Build the email body
         const emailBody = `
-            Linkedin: ${activeProfile.linkedin}
-            Name: ${activeProfile.name}
-            Surname: ${activeProfile.surname}
-            Date of Birth: ${activeProfile.birthday}
-            Phone Number: ${activeProfile.phoneNumber}
-            Email: ${activeProfile.email}
+            Linkedin: ${activeProfile.linkedin || 'N/A'}
+            Name: ${activeProfile.name || 'N/A'}
+            Surname: ${activeProfile.surname || 'N/A'}
+            Date of Birth: ${activeProfile.birthday || 'N/A'}
+            Phone Number: ${activeProfile.phoneNumber || 'N/A'}
+            Email: ${activeProfile.email || 'N/A'}
         ----------------------------------------------------
-            Summary: ${activeProfile.summary}
+            Summary: ${activeProfile.summary || 'N/A'}
         ----------------------------------------------------
-            Location: ${activeProfile.location}
-            Education: ${activeProfile.education}
-            Experience: ${activeProfile.experience}
-            Skills: ${activeProfile.skills}
-            Certifications: ${activeProfile.certifications}
-            Portfolio: ${activeProfile.portfolio}
+            Location: ${activeProfile.location || 'N/A'}
+            Education: ${activeProfile.education || 'N/A'}
+            Experience: ${activeProfile.experience || 'N/A'}
+            Skills: ${activeProfile.skills || 'N/A'}
+            Certifications: ${activeProfile.certifications || 'N/A'}
+            Portfolio: ${activeProfile.portfolio || 'N/A'}
         `;
+    
+        // Generate mailto link
         const mailtoLink = `mailto:?subject=Profile Data&body=${encodeURIComponent(emailBody)}`;
         window.location.href = mailtoLink;
     });
+    
     // Handle dropdown change to update active profile
     profilesDropdown.addEventListener("change", (event) => {
         setActiveProfile(event.target.value);
@@ -253,7 +267,6 @@ async function runAI(activeProfile) {
 
 
 
-// Fill the form on the website when the button is clicked
 document.getElementById("fill").addEventListener("click", async () => {
     // Retrieve the profiles from Chrome storage
     chrome.storage.local.get("profiles", (result) => {
@@ -272,44 +285,89 @@ document.getElementById("fill").addEventListener("click", async () => {
             chrome.scripting.executeScript({
                 target: { tabId: tabs[0].id },
                 func: fillWebsiteForm,
-                args: [profileData], // Pass the profile data to the function
+                args: [profileData, fieldMapping], // Pass the profile data and field mapping to the function
             });
         });
     });
 });
 
 // Function to be executed on the active tab to fill in the form
-function fillWebsiteForm(profileData) {
-    // Map the profile fields to the website form fields (update selectors as needed)
-    const fieldMappings = {
-        linkedin: "input[name='linkedin']",
-        name: "input[name='name']",
-        surname: "input[name='surname']",
-        birthday: "input[name='birthday']",
-        phoneNumber: "input[name='phone_number']",
-        email: "input[name='email']",
-        summary: "textarea[name='summary']",
-        location: "input[name='location']",
-        education: "textarea[name='education']",
-        experience: "textarea[name='experience']",
-        skills: "textarea[name='skills']",
-        certifications: "textarea[name='certifications']",
-        coverLetter: "textarea[name='cover_letter']",
-        portfolio: "input[name='portfolio']"
-    };
+function fillWebsiteForm(profileData, fieldMapping) {
+    // Iterate through the field mapping object
+    for (const [profileKey, selectors] of Object.entries(fieldMapping)) {
+        let elementFound = false;
 
-    // Iterate through the field mappings and populate the form fields
-    for (const [profileKey, selector] of Object.entries(fieldMappings)) {
-        const element = document.querySelector(selector);
-        if (element && profileData[profileKey]) {
-            element.value = profileData[profileKey];
+        // Iterate through each possible selector for the current profile key
+        for (const selector of selectors) {
+            const element = document.querySelector(`input[name='${selector}'], textarea[name='${selector}']`);
+            if (element) {
+                element.value = profileData[profileKey] || "";
 
-            element.dispatchEvent(new Event("input", { bubbles: true }));
-            element.dispatchEvent(new Event("change", { bubbles: true }));
+                // Trigger input and change events
+                element.dispatchEvent(new Event("input", { bubbles: true }));
+                element.dispatchEvent(new Event("change", { bubbles: true }));
+
+                elementFound = true;
+                break; // Stop searching once a match is found
+            }
+        }
+
+        if (!elementFound) {
+            console.warn(`No matching form field found for profile key: ${profileKey}`);
         }
     }
+
     alert("Form filled with the selected profile data!");
 }
+
+document.getElementById("downloadProfile").addEventListener("click", () => {
+    const profileSelector = document.getElementById("profiles");
+    const selectedProfileName = profileSelector.value;
+
+    if (!selectedProfileName) {
+        alert("No profile selected to download!");
+        return;
+    }
+
+    chrome.storage.local.get("profiles", (result) => {
+        const profiles = result.profiles || {};
+        const selectedProfile = profiles[selectedProfileName];
+
+        if (!selectedProfile) {
+            alert("The selected profile does not exist.");
+            return;
+        }
+
+        const profileData = JSON.stringify(selectedProfile, null, 2);
+        const blob = new Blob([profileData], { type: "application/json" });
+        const downloadLink = document.createElement("a");
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.download = `${selectedProfileName}.json`;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+
+        alert(`Profile "${selectedProfileName}" downloaded successfully!`);
+    });
+});
+
+const fieldMapping = {
+  linkedin: ["linkedin","linkedIn", "linkedin_url", "profile_url", "linkedinprofile"],
+  nameField: ["name", "first_name", "firstname", "givenname", "first"],
+  surnameField: ["lastname", "last_name", "surname", "familyname", "secondname"],
+  birthday: ["dob", "dateofbirth", "birthdate", "birthday"],
+  phoneNumber: ["phone", "phone_number", "phonenumber", "contact"],
+  email: ["email", "email_address", "emailaddress"],
+  summaryField: ["summary", "profile_summary", "about", "description"],
+  locationField: ["location", "city", "town", "address", "region"],
+  educationField: ["education", "educations", "studies", "academic_experience"],
+  experienceField: ["experience", "experiences", "work_experience", "job_experience"],
+  skillsField: ["skills", "technical_skills", "soft_skills", "relevant_skills"],
+  certificationsField: ["certifications", "certs", "accreditations", "awards"],
+  coverLetter: ["coverletter", "cover_letter", "application_letter", "motivation"]
+};
+
+
 
 document.getElementById("downloadProfile").addEventListener("click", () => {
     const profileSelector = document.getElementById("profiles");
